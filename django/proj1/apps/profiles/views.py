@@ -2,7 +2,12 @@ import json
 from django.db.models.query_utils import logging
 from django.http import JsonResponse
 from .models import Profile
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ProfileSerializer
 
+@api_view(['GET'])
 def get(request):
     try:
         profiles = Profile.objects.all().values('id', 'first_name', 'last_name', 'profession', 'type')
@@ -14,22 +19,12 @@ def get(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 
+@api_view(['POST'])
 def post(request):
-    try:
-        if request.method == 'POST':
-            data = json.loads(request.body)
-
-            Profile.objects.create(
-                first_name=data['first_name'],
-                last_name=data['last_name'],
-                profession=data['profession'],
-                type=data['type'],
-                user_id=data['user_id']
-            )
-
-            return JsonResponse({}, status=201)
-    except Exception as e:
-        logging.error("Error: ", str(e))
-        return JsonResponse({'error': str(e)}, status=500)
+    serializer = ProfileSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
