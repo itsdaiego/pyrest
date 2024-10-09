@@ -16,5 +16,3 @@ def create_contract(request):
             "message": "Contract created successfully",
             "contract": serialize.data,
         } ,status=status.HTTP_201_CREATED)
-
-
