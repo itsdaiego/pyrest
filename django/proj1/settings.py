@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'proj1.apps.profiles',
-    'proj1.apps.users'
+    'proj1.apps.users',
+    'proj1.apps.jobs',
+    'proj1.apps.contracts'
 ]
 
 MIDDLEWARE = [

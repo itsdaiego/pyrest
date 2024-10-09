@@ -15,6 +15,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'balance', 'created_at', 'updated_at')
 
     def create(self, validated_data):
-        user = validated_data.pop('user')
-        profile = Profile.objects.create(user=user, **validated_data)
+        profile = Profile.objects.create(**validated_data)
+
         return profile
