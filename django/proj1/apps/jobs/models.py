@@ -1,5 +1,4 @@
 from django.db import models
-from rest_framework.decorators import api_view
 from proj1.apps.contracts.models import Contract
 
 
