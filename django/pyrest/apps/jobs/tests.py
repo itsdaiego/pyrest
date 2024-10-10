@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from proj1.apps.contracts.models import Contract
-from proj1.apps.profiles.models import Profile
-from proj1.apps.jobs.models import Job
+from pyrest.apps.contracts.models import Contract
+from pyrest.apps.profiles.models import Profile
+from pyrest.apps.jobs.models import Job
 
 
 class JobAPITests(TestCase):

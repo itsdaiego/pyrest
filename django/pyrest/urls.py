@@ -1,5 +1,5 @@
 """
-URL configuration for proj1 project.
+URL configuration for pyrest project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -19,10 +19,10 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('proj1.apps.profiles.urls')),
-    path('api/', include('proj1.apps.users.urls')),
-    path('api/', include('proj1.apps.jobs.urls')),
-    path('api/', include('proj1.apps.contracts.urls')),
-    path('api/', include('proj1.apps.jobs.urls'))
+    path('api/', include('pyrest.apps.profiles.urls')),
+    path('api/', include('pyrest.apps.users.urls')),
+    path('api/', include('pyrest.apps.jobs.urls')),
+    path('api/', include('pyrest.apps.contracts.urls')),
+    path('api/', include('pyrest.apps.jobs.urls'))
 ]
     

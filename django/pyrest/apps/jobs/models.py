@@ -1,5 +1,5 @@
 from django.db import models
-from proj1.apps.contracts.models import Contract
+from pyrest.apps.contracts.models import Contract
 
 
 class Job(models.Model):

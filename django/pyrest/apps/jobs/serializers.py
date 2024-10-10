@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from proj1.apps.contracts.models import Contract
-from proj1.apps.jobs.models import Job
+from pyrest.apps.contracts.models import Contract
+from pyrest.apps.jobs.models import Job
 from django.utils import timezone
 
 

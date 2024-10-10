@@ -1,6 +1,6 @@
 from django.db import models
 
-from proj1.apps.profiles.models import Profile
+from pyrest.apps.profiles.models import Profile
 
 
 class Contract(models.Model):

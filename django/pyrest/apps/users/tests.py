@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from proj1.apps.profiles.models import Profile
+from pyrest.apps.profiles.models import Profile
 
 
 class UserAPITests(TestCase):

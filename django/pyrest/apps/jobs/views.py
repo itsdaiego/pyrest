@@ -6,8 +6,8 @@ from rest_framework.views import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 
-from proj1.apps.jobs.models import Job
-from proj1.apps.jobs.serializers import JobSerializer
+from pyrest.apps.jobs.models import Job
+from pyrest.apps.jobs.serializers import JobSerializer
 
 
 @api_view(['POST'])

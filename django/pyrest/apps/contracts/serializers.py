@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from proj1.apps.contracts.models import Contract
-from proj1.apps.profiles.models import Profile
+from pyrest.apps.contracts.models import Contract
+from pyrest.apps.profiles.models import Profile
 
 
 class ContractSerializer(serializers.ModelSerializer):
