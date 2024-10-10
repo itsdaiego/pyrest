@@ -48,14 +48,15 @@ class ContractAPITests(TestCase):
     def test_create_contract(self):
         response = self.client.post('/api/contracts/', self.contract_data, format='json')
         data = response.json()
+        contract = data['contract']
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn('message', data)
         self.assertIn('contract', data)
         self.assertEqual(Contract.objects.count(), 1)
 
-        self.assertEqual(data['client_id'], self.client_profile)
-        self.assertEqual(data['contractor_id'], self.contractor_profile)
+        self.assertEqual(contract['client_id'], self.client_profile.id)
+        self.assertEqual(contract['contractor_id'], self.contractor_profile.id)
 
     def test_create_contract_invalid_data(self):
         invalid_data = {

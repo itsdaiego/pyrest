@@ -1,6 +1,6 @@
 import json
-from django.db.models.query_utils import logging
 from django.http import JsonResponse
+from django.views.generic.base import logger
 from .models import Profile
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -15,7 +15,7 @@ def get(request):
 
         return JsonResponse(list(profiles), safe=False)
     except Exception as e:
-        logging.error(str(e))
+        logger.error(str(e))
         return JsonResponse({'error': str(e)}, status=500)
 
 

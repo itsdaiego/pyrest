@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from proj1.apps.contracts.models import Contract
+from proj1.apps.profiles.models import Profile
 
 
 class ContractSerializer(serializers.ModelSerializer):
@@ -21,6 +22,16 @@ class ContractSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         client_id = attrs.get('client_id')
         contractor_id = attrs.get('contractor_id')
+
+        client = Profile.objects.filter(id=client_id).first()
+
+        if not client:
+            raise serializers.ValidationError("Client not found.")
+
+        contractor = Profile.objects.filter(id=contractor_id).first()
+
+        if not contractor:
+            raise serializers.ValidationError("Contractor not found.")
 
         if client_id == contractor_id:
             raise serializers.ValidationError("Client and contractor cannot be the same.")
