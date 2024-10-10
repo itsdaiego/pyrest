@@ -11,8 +11,8 @@ from .serializers import ProfileSerializer
 def get(request):
     try:
         profiles = Profile.objects.all().values('id', 'first_name', 'last_name', 'profession', 'type')
-        csrf_token = request.COOKIES.get('csrftoken')
-        print("csrf_token: ", csrf_token)
+        request.COOKIES.get('csrftoken')
+
         return JsonResponse(list(profiles), safe=False)
     except Exception as e:
         logging.error(str(e))

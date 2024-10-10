@@ -16,6 +16,17 @@ class ContractSerializer(serializers.ModelSerializer):
             'updated_at'
         )
         read_only_fields = ('id', 'created_at', 'updated_at')
+
+
+    def validate(self, attrs):
+        client_id = attrs.get('client_id')
+        contractor_id = attrs.get('contractor_id')
+
+        if client_id == contractor_id:
+            raise serializers.ValidationError("Client and contractor cannot be the same.")
+
+        return attrs
+
     
     def create(self, validated_data):
         return Contract.objects.create(**validated_data)

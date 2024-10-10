@@ -5,5 +5,5 @@ from . import views
 
 
 urlpatterns = [
-    path('jobs/', views.create_contract, name='create_job')
+    path('contracts/', views.create_contract, name='create_contract')
 ]

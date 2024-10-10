@@ -8,6 +8,7 @@ class Profile(models.Model):
         ('contractor', 'Contractor'),
     ]
 
+    id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
