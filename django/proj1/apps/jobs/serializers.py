@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from proj1.apps.contracts.models import Contract
 from proj1.apps.jobs.models import Job
+from django.utils import timezone
 
 
 class JobSerializer(serializers.ModelSerializer):
@@ -31,3 +32,25 @@ class JobSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return Job.objects.create(**validated_data)
+
+
+    def perform_payment(self, job):
+        if job.paid:
+            raise serializers.ValidationError('This job has already been paid')
+
+        client = job.contract.client
+        contractor = job.contract.contractor
+
+        if client.balance < job.price:
+            raise serializers.ValidationError('Insufficient funds')
+
+        client.balance -= job.price
+        contractor.balance += job.price
+        job.paid = True
+        job.payment_date = timezone.now()
+
+        client.save()
+        contractor.save()
+        job.save()
+
+        return job

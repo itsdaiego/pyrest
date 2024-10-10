@@ -29,14 +29,16 @@ class JobAPITests(TestCase):
             first_name='Client',
             last_name='User',
             profession='Manager',
-            type='client'
+            type='client',
+            balance=1000
         )
         self.contractor_profile = Profile.objects.create(
             user=self.user2,
             first_name='Contractor',
             last_name='User',
             profession='Developer',
-            type='contractor'
+            type='contractor',
+            balance=0
         )
 
         self.contract = Contract.objects.create(
@@ -93,6 +95,29 @@ class JobAPITests(TestCase):
         response = self.client.post('/api/jobs/', invalid_data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+    def test_perform_payment(self):
+        job = Job.objects.create(**self.job_data)
+
+        response = self.client.post(f'/api/jobs/{job.id}/pay/', format='json')
+        data = response.json()
+        paid_job = data['job']
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('message', data)
+        self.assertIn('job', data)
+
+        self.assertEqual(paid_job['description'], job.description)
+        self.assertEqual(paid_job['price'], job.price)
+        self.assertEqual(paid_job['paid'], True)
+
+        client = Profile.objects.get(user=self.user1)
+        contractor = Profile.objects.get(user=self.user2)
+
+        self.assertEqual(client.balance, 0)
+        self.assertEqual(contractor.balance, 1000)
+
 
     def tearDown(self):
         User.objects.all().delete()
