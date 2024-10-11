@@ -27,7 +27,6 @@ class LoginSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         user = authenticate(username=attrs['username'], password=attrs['password'])
-        authenticate()
 
         if user and user.is_active:
             refresh = RefreshToken.for_user(user)
