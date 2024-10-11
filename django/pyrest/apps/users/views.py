@@ -6,30 +6,14 @@ from .serializers import UserSerializer, LoginSerializer, RegisterSerializer
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def create_user(request):
-    serializer = UserSerializer(data=request.data)
-
-    if serializer.is_valid():
-        user = serializer.save()
-
-        return Response({
-            "message": "User created successfully",
-            "user": UserSerializer(user).data
-        }, status=status.HTTP_201_CREATED)
-
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([AllowAny])
 def login_user(request):
     serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.validated_data['user']
-        token = serializer.validated_data['access']
+        token = serializer.validated_data['access_token']
 
         return Response({
-            'user': UserSerializer(user).data,
+            'user': LoginSerializer(user).data,
             'token': token
         }, status=status.HTTP_200_OK)
 
@@ -44,7 +28,7 @@ def register_user(request):
         user = serializer.save()
         return Response({
             "message": "User registered successfully",
-            "user": UserSerializer(user).data
+            "user": RegisterSerializer(user).data
         }, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

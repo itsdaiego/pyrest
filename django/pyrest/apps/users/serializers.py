@@ -32,9 +32,9 @@ class LoginSerializer(serializers.Serializer):
             refresh = RefreshToken.for_user(user)
 
             return {
-                'user': UserSerializer(user).data,
+                'user': LoginSerializer(user).data,
                 'refresh': str(refresh),
-                'access': str(refresh.token),
+                'access_token': str(refresh.access_token),
             }
 
         raise serializers.ValidationError("Invalid credentials")

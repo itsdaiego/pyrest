@@ -17,16 +17,6 @@ class UserAPITests(TestCase):
             'password2': 'newpass123'
         }
 
-    def test_create_user_api(self):
-        response = self.client.post('/api/users', self.user_data, format='json')
-        data = response.json()
-        user = User.objects.get(username='newuser')
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(user.get_username(), 'newuser')
-        self.assertIn('message', data)
-        self.assertIn('user', data)
-
     def test_login_user(self):
         User.objects.create_user(username='newuser', email='newuser@example.com', password='newpass123')
         response = self.client.post('/api/login/', {
@@ -38,6 +28,7 @@ class UserAPITests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('token', data)
         self.assertIn('user', data)
+        self.assertNotIn('password', data['user'])
 
     def test_register_user(self):
         response = self.client.post('/api/register/', self.user_data, format='json')
