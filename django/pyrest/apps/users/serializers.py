@@ -30,11 +30,13 @@ class LoginSerializer(serializers.Serializer):
 
         if user and user.is_active:
             refresh = RefreshToken.for_user(user)
+
             return {
                 'user': UserSerializer(user).data,
                 'refresh': str(refresh),
                 'access': str(refresh.token),
             }
+
         raise serializers.ValidationError("Invalid credentials")
 
 

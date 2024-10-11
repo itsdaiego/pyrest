@@ -36,8 +36,7 @@ class UserAPITests(TestCase):
         data = response.json()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('access', data)
-        self.assertIn('refresh', data)
+        self.assertIn('token', data)
         self.assertIn('user', data)
 
     def test_register_user(self):
