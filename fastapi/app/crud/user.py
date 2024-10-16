@@ -1,10 +1,10 @@
 import logging
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status
+from fastapi import HTTPException, Request, status
 from jose import jwt
 
 from app.models import User
-from app.schemas.user import UserCreate, UserResponse
+from app.schemas.user import UserCreate
 from app.services.user import UserService, UserAlreadyExists, IncorrectCredentials, SECRET_KEY, ALGORITHM
 
 def register_user(user_data: UserCreate, db: Session):
@@ -39,22 +39,9 @@ def authenticate_user(username: str, password: str, db: Session):
             detail="Something went wrong",
         )
 
-def get_current_user(token: str, db: Session):
+def get_current_user(request: Request, token: str, db: Session):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        if payload is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Could not validate credentials",
-            )
-        user_id = payload.get("sub")
-        user = db.query(User).filter(User.id == user_id).first()
-        if user_id is None or user is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Could not find user",
-            )
-        return user
+        return request.state.user
     except Exception as e:
         logging.error("Error getting user %s", str(e))
         raise HTTPException(

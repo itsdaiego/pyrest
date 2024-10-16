@@ -87,3 +87,50 @@ def test_register_missing_fields(client):
         }
     )
     assert response.status_code == 422 
+
+
+def test_login_success(client):
+    client.post(
+        "/auth/register",
+        json={
+            "username": "testuser",
+            "email": "test@email.com",
+            "password": "testpassword",
+        }
+    )
+
+    response = client.post(
+        '/auth/login',
+        json={
+            "username": "testuser",
+            "password": "testpassword"
+        }
+    )
+
+    assert response.status_code == 200
+
+    assert "access_token" in response.json()
+    assert "refresh_token" in response.json()
+
+
+def test_login_invalid_credentials(client):
+    client.post(
+        "/auth/register",
+        json={
+            "username": "testuser",
+            "email": "test@email.com",
+            "password": "testpassword",
+        }
+    )
+
+    response = client.post(
+        '/auth/login',
+        json={
+            "username": "testuser",
+            "password": "wrongpassword"
+        }
+    )
+
+    assert response.status_code == 401
+
+
