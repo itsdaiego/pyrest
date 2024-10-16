@@ -161,6 +161,8 @@ def test_me_success(client):
         }
     )
 
-    print("response", response)
-
     assert response.status_code == 200
+
+    assert response.json()["username"] == "testuser"
+    assert response.json()["email"] == "test@email.com"
+    assert "id" in response.json()

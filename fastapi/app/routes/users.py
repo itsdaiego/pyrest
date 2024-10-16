@@ -1,13 +1,12 @@
 import logging
 
-from fastapi import APIRouter, Body, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Body, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from app.db.database import get_db
-from app.middlewares.authenticate import user_is_authenticated
+from app.helpers.authenticate import user_is_authenticated
 from app.schemas.user import Login, Token, UserCreate, UserResponse
-from app.crud import user as user_crud
 from app.services.user import IncorrectCredentials, UserAlreadyExists, UserService
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -52,9 +51,13 @@ def login(json_data: Login = Body(...), db: Session = Depends(get_db)):
 user_router = APIRouter()
 
 @user_router.get("/me", response_model=UserResponse, dependencies=[Depends(user_is_authenticated)])
-def users_me(request: Request):
+def users_me(user: UserResponse = Depends(user_is_authenticated)) -> UserResponse:
     try:
-        return user_crud.get_current_user(request)
+        return UserResponse(
+            id=user.id,
+            username=user.username,
+            email=user.email
+        )
     except Exception as e:
         logging.error(f"Error getting current user: {str(e)}")
         raise HTTPException(

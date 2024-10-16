@@ -1,13 +1,12 @@
 import logging
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, Request, status
-from jose import jwt
+from fastapi import HTTPException, status
 
-from app.models import User
-from app.schemas.user import UserCreate
-from app.services.user import UserService, UserAlreadyExists, IncorrectCredentials, SECRET_KEY, ALGORITHM
+from app.schemas.user import Token, UserCreate, UserResponse
+from app.services.user import UserService, UserAlreadyExists, IncorrectCredentials
 
-def register_user(user_data: UserCreate, db: Session):
+
+def register_user(user_data: UserCreate, db: Session) -> UserResponse:
     try:
         return UserService.register_user(user_data, db)
     except UserAlreadyExists as e:
@@ -23,7 +22,8 @@ def register_user(user_data: UserCreate, db: Session):
             detail="Something went wrong",
         )
 
-def authenticate_user(username: str, password: str, db: Session):
+
+def authenticate_user(username: str, password: str, db: Session) -> Token:
     try:
         return UserService.authenticate_user(username, password, db)
     except IncorrectCredentials as e:
@@ -39,12 +39,3 @@ def authenticate_user(username: str, password: str, db: Session):
             detail="Something went wrong",
         )
 
-def get_current_user(request: Request):
-    try:
-        return request.state.user
-    except Exception as e:
-        logging.error("Error getting user %s", str(e))
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Something went wrong"
-        )
