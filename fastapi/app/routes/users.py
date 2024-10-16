@@ -52,6 +52,13 @@ def login(json_data: Login = Body(...), db: Session = Depends(get_db)):
 user_router = APIRouter()
 
 @user_router.get("/me", response_model=UserResponse, dependencies=[Depends(user_is_authenticated)])
-def users_me(request: Request, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    return user_crud.get_current_user(request, token, db)
+def users_me(request: Request):
+    try:
+        return user_crud.get_current_user(request)
+    except Exception as e:
+        logging.error(f"Error getting current user: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Something went wrong",
+        )
 

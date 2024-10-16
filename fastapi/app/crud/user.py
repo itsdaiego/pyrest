@@ -39,7 +39,7 @@ def authenticate_user(username: str, password: str, db: Session):
             detail="Something went wrong",
         )
 
-def get_current_user(request: Request, token: str, db: Session):
+def get_current_user(request: Request):
     try:
         return request.state.user
     except Exception as e:

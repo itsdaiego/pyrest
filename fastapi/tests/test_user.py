@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from app.main import app
 from app.db.database import Base
 from app.db.database import get_db
+from app.routes.users import register
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
@@ -88,8 +89,7 @@ def test_register_missing_fields(client):
     )
     assert response.status_code == 422 
 
-
-def test_login_success(client):
+def register_user(client):
     client.post(
         "/auth/register",
         json={
@@ -98,6 +98,10 @@ def test_login_success(client):
             "password": "testpassword",
         }
     )
+
+
+def test_login_success(client):
+    register_user(client)
 
     response = client.post(
         '/auth/login',
@@ -114,14 +118,7 @@ def test_login_success(client):
 
 
 def test_login_invalid_credentials(client):
-    client.post(
-        "/auth/register",
-        json={
-            "username": "testuser",
-            "email": "test@email.com",
-            "password": "testpassword",
-        }
-    )
+    register_user(client)
 
     response = client.post(
         '/auth/login',
@@ -134,3 +131,36 @@ def test_login_invalid_credentials(client):
     assert response.status_code == 401
 
 
+def login_user(client):
+    client.post(
+        "/auth/register",
+        json={
+            "username": "testuser",
+            "email": "test@email.com",
+            "password": "testpassword",
+        }
+    )
+
+    return client.post(
+        '/auth/login',
+        json={
+            "username": "testuser",
+            "password": "testpassword"
+        }
+    )
+
+
+def test_me_success(client):
+    login_response = login_user(client)
+    access_token = login_response.json()["access_token"]
+
+    response = client.get(
+        '/users/me',
+        headers={
+            "Authorization": f"Bearer {access_token}"
+        }
+    )
+
+    print("response", response)
+
+    assert response.status_code == 200
