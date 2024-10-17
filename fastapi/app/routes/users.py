@@ -51,8 +51,9 @@ def login(json_data: Login = Body(...), db: Session = Depends(get_db)):
 user_router = APIRouter()
 
 @user_router.get("/me", response_model=UserResponse, dependencies=[Depends(user_is_authenticated)])
-def users_me(user: UserResponse = Depends(user_is_authenticated)) -> UserResponse:
+def users_me(user: UserResponse = Depends(user_is_authenticated)):
     try:
+        print("user", user.profile, user.id)
         return UserResponse(
             id=user.id,
             username=user.username,
@@ -61,6 +62,7 @@ def users_me(user: UserResponse = Depends(user_is_authenticated)) -> UserRespons
         )
     except Exception as e:
         logging.error(f"Error getting current user: {str(e)}")
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Something went wrong",

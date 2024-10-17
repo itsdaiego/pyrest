@@ -16,4 +16,4 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     profile = Column(SQLAlchemyEnum(Profile), default=Profile.CLIENT)
-
+    # TODO add created_at, updated_at

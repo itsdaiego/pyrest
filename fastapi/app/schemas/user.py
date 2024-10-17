@@ -5,13 +5,12 @@ from app.models.user import Profile
 class UserBase(BaseModel):
   username: str
   email: EmailStr
+  profile: Profile
 
 class UserResponse(UserBase):
     id: str
-    profile: Profile
 
 class UserCreate(UserBase):
-    email: EmailStr
     password: str
 
 

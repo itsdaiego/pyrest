@@ -1,2 +1,3 @@
 from .user import User
-# Import other models here if you have any
+from .contract import Contract
+from .job import Job

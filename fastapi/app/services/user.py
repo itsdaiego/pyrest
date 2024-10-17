@@ -57,7 +57,13 @@ class UserService:
 
         hashed_password = bcrypt.hash(user.password)
 
-        db_user = User(username=user.username, email=user.email, hashed_password=hashed_password)
+        db_user = User(
+            username=user.username,
+            email=user.email,
+            hashed_password=hashed_password,
+            profile=user.profile
+        )
+
         db.add(db_user)
 
         db.commit()
@@ -68,7 +74,7 @@ class UserService:
             id=str(db_user.id),
             username=str(db_user.username),
             email=EmailStr(db_user.email),
-            profile=str(db_user.profile)
+            profile=db_user.profile
         )
 
     @staticmethod
