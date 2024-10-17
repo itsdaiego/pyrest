@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from app.main import app
 from app.db.database import Base
 from app.db.database import get_db
+from app.models.user import Profile
 from app.routes.users import register
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
@@ -39,7 +40,8 @@ def test_register_success(client):
         json={
             "username": "testuser",
             "email": "testuser@example.com",
-            "password": "testpassword"
+            "password": "testpassword",
+            "profile": Profile.CLIENT.value,
         }
     )
 
@@ -51,7 +53,8 @@ def test_register_existing_user(client):
         json={
             "username": "existinguser",
             "email": "existinguser@example.com",
-            "password": "testpassword"
+            "password": "testpassword",
+            "profile": Profile.CLIENT.value,
         }
     )
     
@@ -60,7 +63,8 @@ def test_register_existing_user(client):
         json={
             "username": "existinguser",
             "email": "existinguser@example.com",
-            "password": "testpassword"
+            "password": "testpassword",
+            "profile": Profile.CLIENT.value,
         }
     )
 
@@ -73,7 +77,8 @@ def test_register_invalid_email(client):
         json={
             "username": "invaliduser",
             "email": "notanemail",
-            "password": "testpassword"
+            "password": "testpassword",
+            "profile": Profile.CLIENT.value,
         }
     )
 
@@ -87,6 +92,7 @@ def test_register_missing_fields(client):
             "password": "testpassword"
         }
     )
+
     assert response.status_code == 422 
 
 def register_user(client):
@@ -96,6 +102,7 @@ def register_user(client):
             "username": "testuser",
             "email": "test@email.com",
             "password": "testpassword",
+            "profile": Profile.CLIENT.value,
         }
     )
 
@@ -138,6 +145,7 @@ def login_user(client):
             "username": "testuser",
             "email": "test@email.com",
             "password": "testpassword",
+            "profile": Profile.CLIENT.value,
         }
     )
 

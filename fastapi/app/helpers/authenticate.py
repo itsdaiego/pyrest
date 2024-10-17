@@ -17,7 +17,6 @@ async def user_is_authenticated(request: Request, db: Session = Depends(get_db))
         raise HTTPException(status_code=401, detail="No token provided")
 
     try:
-        print("Hello")
         token = bearer_token.split("Bearer ")[1]
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id = payload.get("sub")
@@ -29,8 +28,6 @@ async def user_is_authenticated(request: Request, db: Session = Depends(get_db))
 
         if user is None:
             raise HTTPException(status_code=401, detail="User not found")
-
-        print("User is authenticated", user.email)
 
         return user
 

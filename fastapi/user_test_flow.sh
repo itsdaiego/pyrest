@@ -9,7 +9,8 @@ register_response=$(curl -s -X POST "${BASE_URL}/auth/register" \
   -d '{
     "username": "testuser",
     "email": "testuser@example.com",
-    "password": "testpassword"
+    "password": "testpassword",
+    "profile": "client"
   }')
 
 echo "Registration response:"

@@ -67,7 +67,8 @@ class UserService:
         return UserResponse(
             id=str(db_user.id),
             username=str(db_user.username),
-            email=EmailStr(db_user.email)
+            email=EmailStr(db_user.email),
+            profile=str(db_user.profile)
         )
 
     @staticmethod
@@ -81,14 +82,3 @@ class UserService:
             access_token=UserService.create_access_token(str(user.id)),
             refresh_token=UserService.create_refresh_token(str(user.id))
         )
-
-    @staticmethod
-    def get_user_by_username(username: str, db: Session) -> User:
-        user = db.query(User).filter(User.username == username).first()
-        if user is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Could not validate credentials",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        return user

@@ -53,10 +53,13 @@ user_router = APIRouter()
 @user_router.get("/me", response_model=UserResponse, dependencies=[Depends(user_is_authenticated)])
 def users_me(user: UserResponse = Depends(user_is_authenticated)) -> UserResponse:
     try:
+        print("data", user.id, user.profile.value)
+
         return UserResponse(
             id=user.id,
             username=user.username,
-            email=user.email
+            email=user.email,
+            profile=user.profile
         )
     except Exception as e:
         logging.error(f"Error getting current user: {str(e)}")
