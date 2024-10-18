@@ -53,7 +53,6 @@ user_router = APIRouter()
 @user_router.get("/me", response_model=UserResponse, dependencies=[Depends(user_is_authenticated)])
 def users_me(user: UserResponse = Depends(user_is_authenticated)):
     try:
-        print("user", user.profile, user.id)
         return UserResponse(
             id=user.id,
             username=user.username,

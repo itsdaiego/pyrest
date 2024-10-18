@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.contract import Contract, ContractStatus
 from app.schemas.contract import ContractCreate, ContractResponse
-from datetime import datetime
 
 
 class ContractService:
@@ -12,8 +11,8 @@ class ContractService:
                 title=contract.title,
                 description=contract.description,
                 price=contract.price,
-                client_id=contract.client_id,
-                contractor_id=contract.contractor_id,
+                client_id=str(contract.client_id),
+                contractor_id=str(contract.contractor_id),
                 status=ContractStatus.PENDING
             )
 
