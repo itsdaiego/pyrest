@@ -60,7 +60,8 @@ class UserService:
             username=user.username,
             email=user.email,
             hashed_password=hashed_password,
-            profile=user.profile
+            profile=user.profile,
+            balance=user.balance
         )
 
         db.add(db_user)
@@ -68,12 +69,12 @@ class UserService:
         db.commit()
         db.refresh(db_user)
 
-
         return UserResponse(
             id=str(db_user.id),
             username=str(db_user.username),
             email=EmailStr(db_user.email),
-            profile=db_user.profile
+            profile=db_user.profile,
+            balance=db_user.balance
         )
 
     @staticmethod

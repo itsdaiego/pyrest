@@ -6,6 +6,7 @@ class UserBase(BaseModel):
   username: str
   email: EmailStr
   profile: Profile
+  balance: float
 
 class UserResponse(UserBase):
     id: str

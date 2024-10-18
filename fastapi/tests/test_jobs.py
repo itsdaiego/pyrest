@@ -16,29 +16,33 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 
 Base.metadata.create_all(bind=engine)
 
-def override_get_db():
-    try:
-        db = TestingSessionLocal()
-        yield db
-    finally:
-        db.close()
 
-app.dependency_overrides[get_db] = override_get_db
-
-client = TestClient(app)
-
-@pytest.fixture(autouse=True)
-def setup_db():
+@pytest.fixture(scope="function")
+def test_db():
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
 
+@pytest.fixture(scope="function")
+def client(test_db): 
+    def override_get_db():
+        try:
+            db = TestingSessionLocal()
+            yield db
+        finally:
+            db.close()
 
-def test_process_job_payment():
+    app.dependency_overrides[get_db] = override_get_db
+    yield TestClient(app)
+    app.dependency_overrides.clear()
+
+
+
+def test_process_job_payment(client):
     db = TestingSessionLocal()
     
-    client_user = User(username="client", email="client@example.com", profile=Profile.CLIENT)
-    contractor_user = User(username="contractor", email="contractor@example.com", profile=Profile.CONTRACTOR)
+    client_user = User(username="myusernameyeah", email="client@example.com", profile=Profile.CLIENT)
+    contractor_user = User(username="myusernameyeah2", email="contractor@example.com", profile=Profile.CONTRACTOR)
     db.add_all([client_user, contractor_user])
     db.commit()
 

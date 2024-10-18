@@ -1,6 +1,6 @@
 from enum import Enum
 
-from sqlalchemy import Column, String, Enum as SQLAlchemyEnum
+from sqlalchemy import Column, Float, String, Enum as SQLAlchemyEnum
 from app.db.database import Base
 import uuid
 
@@ -16,4 +16,5 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     profile = Column(SQLAlchemyEnum(Profile), default=Profile.CLIENT)
-    # TODO add created_at, updated_at
+    balance = Column(Float, default=0.0)
+    # TODO: add timestamps (created_at, updated_at) to all models

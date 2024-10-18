@@ -40,6 +40,7 @@ def test_register_success(client):
             "email": "testuser@example.com",
             "password": "testpassword",
             "profile": Profile.CLIENT.value,
+            "balance": 0.0
         }
     )
 
@@ -53,6 +54,7 @@ def test_register_existing_user(client):
             "email": "existinguser@example.com",
             "password": "testpassword",
             "profile": Profile.CLIENT.value,
+            "balance": 0.0
         }
     )
     
@@ -63,6 +65,7 @@ def test_register_existing_user(client):
             "email": "existinguser@example.com",
             "password": "testpassword",
             "profile": Profile.CLIENT.value,
+            "balance": 0.0
         }
     )
 
@@ -101,6 +104,7 @@ def register_user(client):
             "email": "test@email.com",
             "password": "testpassword",
             "profile": Profile.CLIENT.value,
+            "balance": 0.0
         }
     )
 
@@ -144,6 +148,7 @@ def login_user(client):
             "email": "test@email.com",
             "password": "testpassword",
             "profile": Profile.CLIENT.value,
+            "balance": 0.0
         }
     )
 

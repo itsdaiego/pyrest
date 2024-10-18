@@ -16,6 +16,7 @@ auth_router = APIRouter()
 @auth_router.post("/register", response_model=UserResponse)
 def register(json_data: UserCreate = Body(...), db: Session = Depends(get_db)):
     try:
+        print("HELLAA")
         return UserService.register_user(json_data, db)
     except UserAlreadyExists as e:
         logging.error(f"User already exists: {json_data.email}")
@@ -57,7 +58,8 @@ def users_me(user: UserResponse = Depends(user_is_authenticated)):
             id=user.id,
             username=user.username,
             email=user.email,
-            profile=user.profile
+            profile=user.profile,
+            balance=user.balance,
         )
     except Exception as e:
         logging.error(f"Error getting current user: {str(e)}")

@@ -45,6 +45,7 @@ def create_user(client, profile1, profile2):
             "email": "test@email.com",
             "password": "testpassword",
             "profile": profile1,
+            "balance": 0.0
         }
     )
 
@@ -55,6 +56,7 @@ def create_user(client, profile1, profile2):
             "email": "test2@email.com",
             "password": "testpassword",
             "profile": profile2,
+            "balance": 0.0
         }
     )
 
