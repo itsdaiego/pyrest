@@ -37,14 +37,14 @@ def client(test_db):
     app.dependency_overrides.clear()
 
 
-def create_user(client):
+def create_user(client, profile1, profile2):
     response_client = client.post(
         "/auth/register",
         json={
             "username": "testuser",
             "email": "test@email.com",
             "password": "testpassword",
-            "profile": Profile.CLIENT.value,
+            "profile": profile1,
         }
     )
 
@@ -54,7 +54,7 @@ def create_user(client):
             "username": "testuser2",
             "email": "test2@email.com",
             "password": "testpassword",
-            "profile": Profile.CONTRACTOR.value,
+            "profile": profile2,
         }
     )
 
@@ -62,7 +62,7 @@ def create_user(client):
 
 
 def test_create_contract(client):
-    (client_profile, contractor_profile) = create_user(client)
+    (client_profile, contractor_profile) = create_user(client, Profile.CLIENT.value, Profile.CONTRACTOR.value)
 
     response = client.post(
         "/contracts/",
@@ -85,3 +85,36 @@ def test_create_contract(client):
     assert "created_at" in response.json()
     assert "updated_at" in response.json()
     assert "status" in response.json()
+
+def test_contract_with_same_profile_type(client):
+    (client_profile, contractor_profile) = create_user(client, Profile.CLIENT.value, Profile.CLIENT.value)
+
+    response = client.post(
+        "/contracts/",
+        json={
+            "title": "Test Contract",
+            "description": "Test description",
+            "price": 1000.00,
+            "client_id": client_profile,
+            "contractor_id": contractor_profile
+        }
+    )
+
+    assert response.status_code == 422
+
+
+def test_contract_with_missing_profile(client):
+    (client_profile, _) = create_user(client, Profile.CLIENT.value, Profile.CONTRACTOR.value)
+
+    response = client.post(
+        "/contracts/",
+        json={
+            "title": "Test Contract",
+            "description": "Test description",
+            "price": 1000.00,
+            "client_id": client_profile,
+            "contractor_id": "123"
+        }
+    )
+
+    assert response.status_code == 422

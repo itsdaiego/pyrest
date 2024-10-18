@@ -2,7 +2,6 @@ import os
 
 from pydantic import EmailStr
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status
 from jose import jwt
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
