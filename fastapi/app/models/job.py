@@ -1,14 +1,19 @@
 
-
+import datetime
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
-from app.db.database import Base
+from sqlalchemy.orm import Mapped, mapped_column
+from ..db.database import Base
 
 
 class Job(Base):
     __tablename__ = "jobs"
-    id = Column(Integer, primary_key=True, index=True)
-    description = Column(String, nullable=False)
-    price = Column(Integer, nullable=False)
-    paid = Column(Boolean, nullable=False)
-    payment_date = Column(DateTime, nullable=False)
-    contract = Column(Integer, ForeignKey('contracts.id'))
+
+    id: Mapped[int] =  mapped_column(primary_key=True, index=True, nullable=False)
+    description: Mapped[str] = mapped_column(String, nullable=False)
+    price: Mapped[int] = mapped_column(Integer, nullable=False)
+    paid: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    payment_date: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False)
+    contract: Mapped[int] = mapped_column(Integer, ForeignKey('contracts.id'))
+
+    class Config:
+        orm_mode = True

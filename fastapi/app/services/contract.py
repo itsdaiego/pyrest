@@ -45,17 +45,7 @@ class ContractService:
             db.commit()
             db.refresh(db_contract)
 
-            return ContractResponse(
-                id=db_contract.id,
-                title=db_contract.title,
-                description=db_contract.description,
-                price=db_contract.price,
-                client_id=db_contract.client_id,
-                contractor_id=db_contract.contractor_id,
-                created_at=db_contract.created_at,
-                updated_at=db_contract.updated_at,
-                status=db_contract.status
-            )
+            return ContractResponse.from_orm(db_contract)
         except Exception as e:
             db.rollback()
             raise e

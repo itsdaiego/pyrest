@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -11,7 +12,7 @@ class JobCreate(JobBase):
 class JobResponse(JobBase):
     id: int
     paid: bool
-    payment_date: datetime | None
+    payment_date: Optional[datetime]
     contract: int
 
     class Config:

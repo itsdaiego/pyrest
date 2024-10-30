@@ -41,7 +41,7 @@ class UserService:
         return jwt.encode(
             { 
                 "sub": user_uuid,
-                "exp": datetime.utcnow() + timedelta(minutes=60)
+                "exp": datetime.utcnow() + timedelta(minutes=60 * 24 * 2)
             },
             SECRET_KEY,
             algorithm=ALGORITHM

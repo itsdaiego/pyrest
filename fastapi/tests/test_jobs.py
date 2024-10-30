@@ -41,8 +41,20 @@ def client(test_db):
 def test_process_job_payment(client):
     db = TestingSessionLocal()
     
-    client_user = User(username="myusernameyeah", email="client@example.com", profile=Profile.CLIENT)
-    contractor_user = User(username="myusernameyeah2", email="contractor@example.com", profile=Profile.CONTRACTOR)
+    print("oi")
+    client_user = User(
+        username="myusernameyeah",
+        email="client@example.com",
+        profile=Profile.CLIENT,
+        hashed_password="123"
+
+    )
+    contractor_user = User(
+        username="myusernameyeah2",
+        email="contractor@example.com",
+        profile=Profile.CONTRACTOR,
+        hashed_password="123"
+    )
     db.add_all([client_user, contractor_user])
     db.commit()
 
